@@ -77,5 +77,5 @@ Policies are validated JSON documents:
     }
   },
   "required": ["policy_id", "jurisdiction", "version", "ethical_focus", "rules", "metadata"]
-} ```
+} 
 
