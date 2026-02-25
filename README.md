@@ -22,6 +22,8 @@ Documentation source: [site/index.html](site/index.html)
 
 Published docs site (after Pages deploy): https://agent-policy-org.github.io/upp/
 
+![UPP Docs Preview](assets/upp-site-home.png)
+
 ## Overview
 
 **UPP** (Universal Policy Protocol) standardizes how AI agents (autonomous systems that perceive, decide, and act) adhere to ethical, legal, and behavioral policies.  
