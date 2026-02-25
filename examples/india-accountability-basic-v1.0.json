@@ -1,0 +1,36 @@
+{
+  "policy_id": "india-accountability-basic-v1.0",
+  "jurisdiction": "India",
+  "version": "1.0",
+  "ethical_focus": "accountability",
+  "ethical_categories": [
+    "accountability",
+    "privacy_protection",
+    "bias_mitigation"
+  ],
+  "rules": [
+    {
+      "condition": "sensitive_personal_data == true && lawful_basis_recorded == false",
+      "action": "block_processing_and_request_legal_basis",
+      "enforcement": "block",
+      "explanation": "Promotes accountable handling of sensitive personal data",
+      "risk_level": "high"
+    },
+    {
+      "condition": "model_update_deployed == true && audit_log_created == false",
+      "action": "create_audit_record_and_flag",
+      "enforcement": "warn",
+      "explanation": "Ensures traceability for model and policy-impacting updates",
+      "risk_level": "medium"
+    }
+  ],
+  "metadata": {
+    "update_source": "https://example.in/ai/policies/feed",
+    "authority": "India Digital Policy Working Group",
+    "applies_to": [
+      "data_processing",
+      "model_governance"
+    ],
+    "compliance_date": "2026-06-15"
+  }
+}

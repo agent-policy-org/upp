@@ -1,0 +1,36 @@
+{
+  "policy_id": "us-privacy-basic-v1.0",
+  "jurisdiction": "USA",
+  "version": "1.0",
+  "ethical_focus": "privacy_protection",
+  "ethical_categories": [
+    "bias_mitigation",
+    "transparency",
+    "accountability"
+  ],
+  "rules": [
+    {
+      "condition": "data_type == 'pii' && consent == false",
+      "action": "anonymize_or_block",
+      "enforcement": "block",
+      "explanation": "Aligns with CCPA for consumer data rights, ensuring accountability in data handling",
+      "risk_level": "high"
+    },
+    {
+      "condition": "bias_score > 0.3",
+      "action": "flag_for_review",
+      "enforcement": "warn",
+      "explanation": "Mitigates bias per NIST guidelines, promoting fairness",
+      "risk_level": "medium"
+    }
+  ],
+  "metadata": {
+    "update_source": "https://api.nist.gov/ai/policies/feed",
+    "authority": "NIST",
+    "applies_to": [
+      "data_processing",
+      "decision_making"
+    ],
+    "compliance_date": "2026-03-01"
+  }
+}

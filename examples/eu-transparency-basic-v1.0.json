@@ -1,0 +1,36 @@
+{
+  "policy_id": "eu-transparency-basic-v1.0",
+  "jurisdiction": "EU",
+  "version": "1.0",
+  "ethical_focus": "transparency",
+  "ethical_categories": [
+    "transparency",
+    "accountability",
+    "harm_prevention"
+  ],
+  "rules": [
+    {
+      "condition": "decision_is_automated == true && user_notification_provided == false",
+      "action": "notify_user_before_decision",
+      "enforcement": "warn",
+      "explanation": "Supports transparency obligations for automated decisions",
+      "risk_level": "medium"
+    },
+    {
+      "condition": "high_impact_decision == true && explanation_available == false",
+      "action": "require_explanation_or_block",
+      "enforcement": "block",
+      "explanation": "Prevents opaque high-impact outcomes",
+      "risk_level": "high"
+    }
+  ],
+  "metadata": {
+    "update_source": "https://example.eu/ai/policies/feed",
+    "authority": "EU AI Governance Working Group",
+    "applies_to": [
+      "decision_making",
+      "user_interaction"
+    ],
+    "compliance_date": "2026-06-01"
+  }
+}
