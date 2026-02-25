@@ -42,6 +42,10 @@ Full specification → [docs/spec-v1.0.md](docs/spec-v1.0.md)
 
 Canonical JSON Schema → [docs/schema-v1.0.json](docs/schema-v1.0.json)
 
+Agent integrations (Python) → [docs/agent-integrations.md](docs/agent-integrations.md)
+
+Adoption playbook → [docs/adoption/agent-adoption-playbook.md](docs/adoption/agent-adoption-playbook.md)
+
 ## Specification Summary (v1.0)
 
 ### Policy Schema
@@ -173,6 +177,20 @@ python3 scripts/validate_policies.py
 ```
 
 The script validates every file in `examples/` against `docs/schema-v1.0.json`.
+
+### Agent Runtime Quickstart (Python)
+
+```python
+from integrations.python.generic_guard import guarded_agent_run
+
+context = {"data_type": "pii", "consent": False, "bias_score": 0.1}
+
+result = guarded_agent_run(
+  policy_path="examples/us-privacy-basic-v1.0.json",
+  context=context,
+  run_callable=lambda: "agent output",
+)
+```
 
 ## Releases
 
