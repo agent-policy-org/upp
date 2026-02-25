@@ -11,14 +11,14 @@
   "rules": [
     {
       "condition": "data_type == 'pii' && consent == false",
-      "action": "anonymize_or_block",
+      "action": "redact_pii",
       "enforcement": "block",
       "explanation": "Aligns with CCPA for consumer data rights, ensuring accountability in data handling",
       "risk_level": "high"
     },
     {
       "condition": "bias_score > 0.3",
-      "action": "flag_for_review",
+      "action": "require_human_review",
       "enforcement": "warn",
       "explanation": "Mitigates bias per NIST guidelines, promoting fairness",
       "risk_level": "medium"

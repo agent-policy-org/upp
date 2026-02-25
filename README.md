@@ -36,6 +36,7 @@ This fosters "better humanity" by mitigating risks like bias, harm, non-complian
 - Machine-readable JSON/YAML policy schemas with ethical focus categories
 - Dynamic opt-in updates via secure subscriptions (e.g. NIST, EU AI Act feeds)
 - Runtime enforcement middleware (block/warn/log)
+- Standardized action contract with extension namespaces (`x_*`, `urn:upp:action:*`)
 - Compliance dates to prevent version drift
 - Interoperable with Model Context Protocol (MCP) and commerce protocols (UCP)
 - Built-in audit logging and human override support
@@ -43,6 +44,10 @@ This fosters "better humanity" by mitigating risks like bias, harm, non-complian
 Full specification → [docs/spec-v1.0.md](docs/spec-v1.0.md)
 
 Canonical JSON Schema → [docs/schema-v1.0.json](docs/schema-v1.0.json)
+
+Wire protocol draft → [docs/protocol-wire-v1.0.md](docs/protocol-wire-v1.0.md)
+
+Audit envelope schema → [docs/audit-envelope-v1.0.json](docs/audit-envelope-v1.0.json)
 
 Agent integrations (Python) → [docs/agent-integrations.md](docs/agent-integrations.md)
 
@@ -76,7 +81,7 @@ Policies are validated JSON documents:
         "type": "object",
         "properties": {
           "condition": { "type": "string" },
-          "action": { "type": "string" },
+          "action": { "type": "string", "description": "well-known action or extension (x_* / urn:upp:action:*)" },
           "enforcement": { "type": "string", "enum": ["block", "warn", "log"] },
           "explanation": { "type": "string" },
           "risk_level": { "type": "string", "enum": ["low", "medium", "high"] }
@@ -93,7 +98,7 @@ Policies are validated JSON documents:
         "applies_to": { "type": "array", "items": { "type": "string" } },
         "compliance_date": { "type": "string", "format": "date" }
       },
-      "required": ["update_source", "compliance_date"]
+      "required": ["update_source", "authority", "applies_to", "compliance_date"]
     }
   },
   "required": ["policy_id", "jurisdiction", "version", "ethical_focus", "rules", "metadata"]
@@ -112,14 +117,14 @@ Policies are validated JSON documents:
   "rules": [
     {
       "condition": "data_type == 'pii' && consent == false",
-      "action": "anonymize_or_block",
+      "action": "redact_pii",
       "enforcement": "block",
       "explanation": "Aligns with CCPA for consumer data rights, ensuring accountability in data handling",
       "risk_level": "high"
     },
     {
       "condition": "bias_score > 0.3",
-      "action": "flag_for_review",
+      "action": "require_human_review",
       "enforcement": "warn",
       "explanation": "Mitigates bias per NIST guidelines, promoting fairness",
       "risk_level": "medium"
@@ -129,7 +134,8 @@ Policies are validated JSON documents:
     "update_source": "https://api.nist.gov/ai/policies/feed",
     "authority": "NIST",
     "applies_to": ["data_processing", "decision_making"],
-    "compliance_date": "2026-03-01"
+    "compliance_date": "2026-03-01",
+    "compatible_with": ">=1.0"
   }
 }
 ```

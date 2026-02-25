@@ -55,7 +55,26 @@
         "additionalProperties": false,
         "properties": {
           "condition": { "type": "string", "minLength": 1 },
-          "action": { "type": "string", "minLength": 1 },
+          "action": {
+            "type": "string",
+            "anyOf": [
+              {
+                "enum": [
+                  "block_request",
+                  "require_user_consent",
+                  "require_human_review",
+                  "redact_pii",
+                  "explain_decision"
+                ]
+              },
+              {
+                "pattern": "^x_[a-z0-9._-]+$"
+              },
+              {
+                "pattern": "^urn:upp:action:[a-z0-9._-]+$"
+              }
+            ]
+          },
           "enforcement": {
             "type": "string",
             "enum": ["block", "warn", "log"]
@@ -92,9 +111,34 @@
         "compliance_date": {
           "type": "string",
           "format": "date"
+        },
+        "compatible_with": {
+          "type": "string",
+          "pattern": "^>=?\\d+\\.\\d+(\\.\\d+)?$"
+        },
+        "supersedes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deprecation_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "signature": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "alg": { "type": "string" },
+            "key_id": { "type": "string" },
+            "sig": { "type": "string" },
+            "issued_at": { "type": "string", "format": "date-time" }
+          },
+          "required": ["alg", "key_id", "sig", "issued_at"]
         }
       },
-      "required": ["update_source", "compliance_date"]
+      "required": ["update_source", "authority", "applies_to", "compliance_date"]
     }
   },
   "required": [

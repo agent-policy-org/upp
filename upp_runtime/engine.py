@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ast
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -15,6 +16,12 @@ class PolicyDecision:
     warnings: list[str]
     logs: list[str]
     matched_rules: list[dict[str, Any]]
+    evaluation_errors: list[str]
+
+
+MAX_EXPRESSION_LENGTH = 512
+MAX_AST_NODES = 128
+MAX_AST_DEPTH = 16
 
 
 def load_policy(path: str | Path) -> dict[str, Any]:
@@ -31,13 +38,21 @@ def evaluate_policy(policy: dict[str, Any], context: dict[str, Any]) -> PolicyDe
     warnings: list[str] = []
     logs: list[str] = []
     matched_rules: list[dict[str, Any]] = []
+    evaluation_errors: list[str] = []
 
     for rule in rules:
         condition = str(rule.get("condition", "")).strip()
         if not condition:
             continue
 
-        if _evaluate_condition(condition, context):
+        try:
+            matched = _evaluate_condition(condition, context)
+        except ValueError as error:
+            evaluation_errors.append(f"Rule condition error '{condition}': {error}")
+            logs.append(f"Condition evaluation skipped: {condition}")
+            continue
+
+        if matched:
             matched_rules.append(rule)
             action = str(rule.get("action", "")).strip()
             if action:
@@ -69,13 +84,47 @@ def evaluate_policy(policy: dict[str, Any], context: dict[str, Any]) -> PolicyDe
         warnings=warnings,
         logs=logs,
         matched_rules=matched_rules,
+        evaluation_errors=evaluation_errors,
     )
 
 
 def _evaluate_condition(condition: str, context: dict[str, Any]) -> bool:
-    expression = ast.parse(condition, mode="eval")
+    normalized_condition = _normalize_condition(condition)
+    if len(normalized_condition) > MAX_EXPRESSION_LENGTH:
+        raise ValueError(
+            f"Condition exceeds maximum length {MAX_EXPRESSION_LENGTH}"
+        )
+
+    expression = ast.parse(normalized_condition, mode="eval")
+    _enforce_expression_limits(expression)
     result = _safe_eval(expression.body, context)
     return bool(result)
+
+
+def _normalize_condition(condition: str) -> str:
+    normalized = condition.replace("&&", " and ").replace("||", " or ")
+    normalized = re.sub(r"(?<![=!<>])!(?!=)", " not ", normalized)
+    return normalized.strip()
+
+
+def _enforce_expression_limits(expression: ast.Expression) -> None:
+    node_count = 0
+    max_depth = 0
+
+    queue: list[tuple[ast.AST, int]] = [(expression.body, 1)]
+    while queue:
+        current_node, depth = queue.pop(0)
+        node_count += 1
+        max_depth = max(max_depth, depth)
+
+        if node_count > MAX_AST_NODES:
+            raise ValueError(f"Condition exceeds maximum node count {MAX_AST_NODES}")
+
+        if max_depth > MAX_AST_DEPTH:
+            raise ValueError(f"Condition exceeds maximum AST depth {MAX_AST_DEPTH}")
+
+        for child_node in ast.iter_child_nodes(current_node):
+            queue.append((child_node, depth + 1))
 
 
 def _safe_eval(node: ast.AST, context: dict[str, Any]) -> Any:

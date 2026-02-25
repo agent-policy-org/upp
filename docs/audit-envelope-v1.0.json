@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://upp.dev/schema/v1.0/audit-envelope.schema.json",
+  "title": "UPP Decision Audit Envelope v1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "decision_id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "policy_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "policy_id": { "type": "string" },
+        "jurisdiction": { "type": "string" },
+        "version": { "type": "string" }
+      },
+      "required": ["policy_id", "jurisdiction", "version"]
+    },
+    "input_fingerprint": { "type": "string" },
+    "final_enforcement": {
+      "type": "string",
+      "enum": ["allow", "log", "warn", "block"]
+    },
+    "matched_rules": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "actions": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "errors": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": [
+    "decision_id",
+    "timestamp",
+    "policy_ref",
+    "input_fingerprint",
+    "final_enforcement",
+    "matched_rules",
+    "actions",
+    "warnings",
+    "errors"
+  ]
+}

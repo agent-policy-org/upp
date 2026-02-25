@@ -11,14 +11,14 @@
   "rules": [
     {
       "condition": "decision_is_automated == true && user_notification_provided == false",
-      "action": "notify_user_before_decision",
+      "action": "x_notify_user_before_decision",
       "enforcement": "warn",
       "explanation": "Supports transparency obligations for automated decisions",
       "risk_level": "medium"
     },
     {
       "condition": "high_impact_decision == true && explanation_available == false",
-      "action": "require_explanation_or_block",
+      "action": "explain_decision",
       "enforcement": "block",
       "explanation": "Prevents opaque high-impact outcomes",
       "risk_level": "high"

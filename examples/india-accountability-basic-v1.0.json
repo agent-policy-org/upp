@@ -11,14 +11,14 @@
   "rules": [
     {
       "condition": "sensitive_personal_data == true && lawful_basis_recorded == false",
-      "action": "block_processing_and_request_legal_basis",
+      "action": "require_user_consent",
       "enforcement": "block",
       "explanation": "Promotes accountable handling of sensitive personal data",
       "risk_level": "high"
     },
     {
       "condition": "model_update_deployed == true && audit_log_created == false",
-      "action": "create_audit_record_and_flag",
+      "action": "x_create_audit_record_and_flag",
       "enforcement": "warn",
       "explanation": "Ensures traceability for model and policy-impacting updates",
       "risk_level": "medium"
