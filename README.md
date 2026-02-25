@@ -18,7 +18,9 @@ Open-source • Interoperable with MCP & UCP • Build safer agents today.
 
 ![Validate Policies](https://github.com/agent-policy-org/upp/actions/workflows/validate.yml/badge.svg)
 
-Documentation site (GitHub Pages): https://agent-policy-org.github.io/upp/
+Documentation source: [site/index.html](site/index.html)
+
+Published docs site (after Pages deploy): https://agent-policy-org.github.io/upp/
 
 ## Overview
 
