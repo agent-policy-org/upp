@@ -1,0 +1,28 @@
+{
+  "repository": "https://github.com/agent-policy-org/upp",
+  "latest": "1.0",
+  "generated_at": "2026-02-25T23:52:45+00:00",
+  "policies": [
+    {
+      "policy_id": "eu-transparency-basic-v1.0",
+      "jurisdiction": "EU",
+      "version": "1.0",
+      "digest": "sha256:55774f6adbf14a6ce8168d75b45bf96c61a60f83d2db6590681410f43b598794",
+      "url": "https://raw.githubusercontent.com/agent-policy-org/upp/main/examples/eu-transparency-basic-v1.0.json"
+    },
+    {
+      "policy_id": "india-accountability-basic-v1.0",
+      "jurisdiction": "India",
+      "version": "1.0",
+      "digest": "sha256:5da467ec300b483236b7c5e6c1f7cc27a69e59b7ae2b236d57ed0c17caccd33a",
+      "url": "https://raw.githubusercontent.com/agent-policy-org/upp/main/examples/india-accountability-basic-v1.0.json"
+    },
+    {
+      "policy_id": "us-privacy-basic-v1.0",
+      "jurisdiction": "USA",
+      "version": "1.0",
+      "digest": "sha256:6dae62c51b07ae572ab2226338d4345e905c1c84516f939073c97aba7e930830",
+      "url": "https://raw.githubusercontent.com/agent-policy-org/upp/main/examples/us-privacy-basic-v1.0.json"
+    }
+  ]
+}

@@ -2,6 +2,8 @@
 
 This document defines a practical HTTP distribution profile for UPP policy artifacts.
 
+Reference artifact in this repository: `.well-known/upp/manifest.json`.
+
 ## 1. Endpoints
 
 ### 1.1 Manifest

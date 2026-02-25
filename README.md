@@ -49,6 +49,8 @@ Wire protocol draft → [docs/protocol-wire-v1.0.md](docs/protocol-wire-v1.0.md)
 
 Audit envelope schema → [docs/audit-envelope-v1.0.json](docs/audit-envelope-v1.0.json)
 
+Sample manifest → [.well-known/upp/manifest.json](.well-known/upp/manifest.json)
+
 Agent integrations (Python) → [docs/agent-integrations.md](docs/agent-integrations.md)
 
 Adoption playbook → [docs/adoption/agent-adoption-playbook.md](docs/adoption/agent-adoption-playbook.md)
@@ -185,6 +187,14 @@ python3 scripts/validate_policies.py
 ```
 
 The script validates every file in `examples/` against `docs/schema-v1.0.json`.
+
+### Generate Distribution Manifest
+
+```bash
+python3 scripts/generate_manifest.py
+```
+
+This updates `.well-known/upp/manifest.json` with policy digests from `examples/`.
 
 ### Agent Runtime Quickstart (Python)
 

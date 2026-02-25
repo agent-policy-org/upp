@@ -19,6 +19,8 @@ The format is based on Keep a Changelog and this project follows Semantic Versio
 - Repository hygiene defaults in `.editorconfig` and `.gitignore`
 - Protocol wire draft in `docs/protocol-wire-v1.0.md`
 - Audit envelope schema in `docs/audit-envelope-v1.0.json`
+- Concrete manifest sample in `.well-known/upp/manifest.json`
+- Manifest generator script in `scripts/generate_manifest.py`
 
 ### Changed
 
