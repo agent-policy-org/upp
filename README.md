@@ -173,6 +173,64 @@ More examples in [examples/](examples/)
 | Q4 2026 | Integrations & v2.0 | MCP/UCP compatibility, decentralized update feeds (exploration), v2.0 spec |
 | 2027+ | Standardization & Adoption | OECD/IEEE submission, agent certification badges, enterprise partnerships |
 
+## Planned Features
+
+### Core Protocol
+
+| ID | Feature | Description |
+| --- | --- | --- |
+| F-01 | Policy Composition | `$import` / `$extend` other policies by reference — layer jurisdiction rules on top of a shared base without duplication |
+| F-02 | Versioned Policy Transitions | `supersedes` field linking a new policy to the one it replaces, with a `grace_period` window for safe rollout |
+| F-03 | Scoped Rule Activation | `applies_to` block per rule (agent type, model family, data classification) so one policy file governs heterogeneous fleets |
+| F-04 | Temporal Constraints | `active_from` / `active_until` timestamps on rules — regulatory deadlines and emergency blocks that expire automatically |
+| F-05 | Conflict Resolution Strategy | Explicit `conflict_resolution` field (`most_restrictive`, `first_match`, `priority_order`) for deterministic multi-policy evaluation |
+
+### Enforcement & Runtime
+
+| ID | Feature | Description |
+| --- | --- | --- |
+| F-06 | Graduated Enforcement Levels | Extend block/warn/log with `quarantine` (hold for async human review) and `throttle` (rate-limit rather than block) |
+| F-07 | Explainability Payload | Structured `explanation` object in the audit envelope — which rule triggered, which condition matched, and a human-readable rationale |
+| F-08 | Dry-Run Mode | Evaluate all rules and emit a full audit envelope without enforcing — for testing new policies before activation |
+| F-09 | Consent Token Standard | Signed, short-lived `ConsentToken` a user grants once per session; agents pass it in subsequent calls to satisfy `require_user_consent` |
+| F-10 | Circuit Breaker | Configurable `on_eval_error` behavior (`fail_open` vs `fail_closed`) when policy evaluation itself errors out |
+
+### Distribution & Discovery
+
+| ID | Feature | Description |
+| --- | --- | --- |
+| F-11 | Policy Signing & Verification | `signatures` array (ed25519) on policy documents so agents verify authenticity before loading |
+| F-12 | Differential Policy Feeds | `since` query parameter on feed endpoints returning only policies changed since a given timestamp |
+| F-13 | Push Notifications via Webhooks | Publishers register a webhook URL; the registry POSTs a change event on policy update so subscribers skip polling |
+| F-14 | Offline Bundle | `.uppbundle` — a signed zip of policy + schema + manifest for air-gapped and edge deployments |
+
+### Observability & Audit
+
+| ID | Feature | Description |
+| --- | --- | --- |
+| F-15 | Aggregate Metrics Endpoint | `/upp/metrics` (Prometheus-compatible) exposing per-rule trigger counts, enforcement outcomes, and evaluation latency |
+| F-16 | Audit Log Export | Standard bulk export format (NDJSON / Parquet) for feeding SIEMs, data warehouses, or compliance dashboards |
+| F-17 | Policy Coverage Report | `upp coverage` CLI command showing which rules never triggered in a replay of past calls — surfaces redundant or misscoped rules |
+
+### Developer Experience
+
+| ID | Feature | Description |
+| --- | --- | --- |
+| F-18 | Policy Linter | `upp lint` — catches unreachable rules, contradictory conditions, missing action handlers, and duplicate rule IDs |
+| F-19 | Test Fixtures in Policy Files | Optional `tests` block in policy YAML with input/expected-outcome pairs, runnable via `upp test` |
+| F-20 | Multi-language SDKs | Official TypeScript/Node and Go clients with a shared conformance test suite ensuring identical evaluation across languages |
+| F-21 | OpenTelemetry Integration | Standardized OTEL span attributes (`upp.policy.id`, `upp.rule.id`, `upp.enforcement.level`) for distributed traces |
+
+### Ecosystem
+
+| ID | Feature | Description |
+| --- | --- | --- |
+| F-22 | Policy Marketplace / Registry | Searchable public index of community policies with trust tiers (verified publisher, community, experimental) and install-by-URI |
+| F-23 | Agent Certification Badge | Verifiable attestation artifact an agent publishes after passing the UPP conformance suite — signal for operators |
+| F-24 | MCP Tool Wrapper | First-class UPP tool definition for MCP hosts so any MCP-compatible orchestrator can load UPP enforcement without custom integration code |
+
+> **Highest-leverage near-term targets:** F-07 (explainability), F-09 (consent tokens), F-11 (policy signing), and F-19 (test fixtures) each close gaps that block serious production adoption.
+
 ## Usage
 
 - Validate a policy: Use any JSON Schema validator (e.g. `jsonschema` in Python)
